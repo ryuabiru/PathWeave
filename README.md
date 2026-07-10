@@ -24,31 +24,63 @@ License: MIT. See [LICENSE](LICENSE).
 
 ## Install
 
-Install the latest release from PowerShell:
+There are three practical ways to use PathWeave:
+
+1. Use the PowerShell installer
+2. Download a release zip
+3. Clone the repository and build from source
+
+### Option 1: Use the PowerShell installer
+
+This is the easiest path for most users.
+
+Install the latest release:
 
 ```powershell
 irm https://raw.githubusercontent.com/ryuabiru/PathWeave/main/install.ps1 | iex
 ```
 
-If you want PathWeave on `Tab` immediately:
+Install and enable `Tab` integration immediately:
 
 ```powershell
 & ([scriptblock]::Create((irm https://raw.githubusercontent.com/ryuabiru/PathWeave/main/install.ps1))) -UseTab
 ```
 
-Upgrade an existing install:
+Upgrade an existing direct install:
 
 ```powershell
 & ([scriptblock]::Create((irm https://raw.githubusercontent.com/ryuabiru/PathWeave/main/install.ps1))) -Action Upgrade
 ```
 
-Uninstall PathWeave:
+Uninstall a direct install:
 
 ```powershell
 & ([scriptblock]::Create((irm https://raw.githubusercontent.com/ryuabiru/PathWeave/main/install.ps1))) -Action Uninstall
 ```
 
-The direct installer uses `%LOCALAPPDATA%\PathWeave`, updates the user `PATH` by default, and manages a marked `# PathWeave start` / `# PathWeave end` block in your PowerShell profile.
+The installer uses `%LOCALAPPDATA%\PathWeave`, updates the user `PATH` by default, and manages a marked `# PathWeave start` / `# PathWeave end` block in your PowerShell profile.
+
+### Option 2: Download a release zip
+
+If you prefer to unpack the files yourself, download the latest release zip from GitHub Releases.
+
+The release zip includes:
+
+- `pwv.exe`
+- `install.ps1`
+- `SHA256SUMS.txt`
+- the PowerShell module
+- the sample profile
+- top-level documentation files
+
+After extracting it, you can either:
+
+- run `install.ps1`, or
+- import the module manually from the extracted directory
+
+### Option 3: Clone the repository and build from source
+
+This is mainly for development, testing, or local iteration.
 
 ## Status
 
