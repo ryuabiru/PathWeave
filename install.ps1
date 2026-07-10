@@ -1,5 +1,7 @@
 [CmdletBinding()]
 param(
+    [ValidateSet('Install', 'Upgrade', 'Uninstall')]
+    [string]$Action = 'Install',
     [string]$Version = 'latest',
     [string]$InstallRoot = (Join-Path $env:LOCALAPPDATA 'PathWeave'),
     [string]$Repository = 'ryuabiru/PathWeave',
@@ -181,6 +183,16 @@ function Get-PathWeaveManagedEntries {
     )
 }
 
+function Test-PathWeaveInstallRoot {
+    param(
+        [Parameter(Mandatory)]
+        [string]$InstallRoot
+    )
+
+    $managedEntries = Get-PathWeaveManagedEntries | Where-Object { Test-Path -LiteralPath (Join-Path $InstallRoot $_) }
+    $managedEntries.Count -gt 0
+}
+
 function Copy-PathWeavePackage {
     param(
         [Parameter(Mandatory)]
@@ -210,6 +222,23 @@ function Copy-PathWeavePackage {
             Copy-Item -LiteralPath $source -Destination $destination -Recurse -Force
         }
     }
+}
+
+function Remove-PathWeaveFromUserPath {
+    param(
+        [Parameter(Mandatory)]
+        [string]$InstallRoot
+    )
+
+    $userPath = [Environment]::GetEnvironmentVariable('Path', 'User')
+    if (-not $userPath) {
+        return
+    }
+
+    $normalizedInstallRoot = $InstallRoot.TrimEnd('\')
+    $entries = $userPath.Split(';', [System.StringSplitOptions]::RemoveEmptyEntries) |
+        Where-Object { $_.TrimEnd('\') -ine $normalizedInstallRoot }
+    [Environment]::SetEnvironmentVariable('Path', ($entries -join ';'), 'User')
 }
 
 function Add-PathWeaveToUserPath {
@@ -250,6 +279,25 @@ function Get-PathWeaveProfileBlock {
     ) -join [Environment]::NewLine
 }
 
+function Remove-PathWeaveProfileBlock {
+    $profilePath = $PROFILE.CurrentUserCurrentHost
+    if (-not (Test-Path -LiteralPath $profilePath)) {
+        return
+    }
+
+    $content = Get-Content -LiteralPath $profilePath -Raw
+    $pattern = '(?ms)\r?\n?# PathWeave start\r?\n.*?^# PathWeave end\r?\n?'
+    $newContent = [regex]::Replace($content, $pattern, '')
+    $newContent = $newContent.TrimEnd("`r", "`n")
+
+    if ([string]::IsNullOrWhiteSpace($newContent)) {
+        Set-Content -LiteralPath $profilePath -Value ''
+        return
+    }
+
+    Set-Content -LiteralPath $profilePath -Value ($newContent + [Environment]::NewLine)
+}
+
 function Update-PathWeaveProfile {
     param(
         [Parameter(Mandatory)]
@@ -282,6 +330,55 @@ function Update-PathWeaveProfile {
     }
 
     Set-Content -LiteralPath $profilePath -Value $newContent
+}
+
+function Remove-PathWeaveInstall {
+    param(
+        [Parameter(Mandatory)]
+        [string]$InstallRoot,
+        [switch]$NoPathUpdate,
+        [switch]$NoProfileUpdate,
+        [switch]$Force
+    )
+
+    if (-not (Test-Path -LiteralPath $InstallRoot)) {
+        Write-Host "PathWeave is not installed at $InstallRoot"
+        return
+    }
+
+    if (-not $Force -and -not (Test-PathWeaveInstallRoot -InstallRoot $InstallRoot)) {
+        throw "InstallRoot does not look like a PathWeave installation. Re-run with -Force to remove it anyway: $InstallRoot"
+    }
+
+    foreach ($entry in Get-PathWeaveManagedEntries) {
+        $path = Join-Path $InstallRoot $entry
+        if (Test-Path -LiteralPath $path) {
+            Remove-Item -LiteralPath $path -Recurse -Force
+        }
+    }
+
+    if (-not $NoProfileUpdate) {
+        Remove-PathWeaveProfileBlock
+    }
+
+    if (-not $NoPathUpdate) {
+        Remove-PathWeaveFromUserPath -InstallRoot $InstallRoot
+    }
+
+    if (Test-Path -LiteralPath $InstallRoot) {
+        $remainingEntries = Get-ChildItem -LiteralPath $InstallRoot -Force -ErrorAction SilentlyContinue
+        if (-not $remainingEntries) {
+            Remove-Item -LiteralPath $InstallRoot -Force
+        }
+    }
+
+    Write-Host "PathWeave removed from $InstallRoot"
+    if (-not $NoProfileUpdate) {
+        Write-Host "PowerShell profile cleaned up."
+    }
+    if (-not $NoPathUpdate) {
+        Write-Host "User PATH cleaned up. Open a new PowerShell session to pick it up."
+    }
 }
 
 function Install-PathWeave {
@@ -339,12 +436,34 @@ function Install-PathWeave {
     }
 }
 
-Install-PathWeave `
-    -Version $Version `
-    -InstallRoot $InstallRoot `
-    -Repository $Repository `
-    -PackageRoot $PackageRoot `
-    -UseTab:$UseTab `
-    -NoPathUpdate:$NoPathUpdate `
-    -NoProfileUpdate:$NoProfileUpdate `
-    -Force:$Force
+switch ($Action) {
+    'Install' {
+        Install-PathWeave `
+            -Version $Version `
+            -InstallRoot $InstallRoot `
+            -Repository $Repository `
+            -PackageRoot $PackageRoot `
+            -UseTab:$UseTab `
+            -NoPathUpdate:$NoPathUpdate `
+            -NoProfileUpdate:$NoProfileUpdate `
+            -Force:$Force
+    }
+    'Upgrade' {
+        Install-PathWeave `
+            -Version $Version `
+            -InstallRoot $InstallRoot `
+            -Repository $Repository `
+            -PackageRoot $PackageRoot `
+            -UseTab:$UseTab `
+            -NoPathUpdate:$NoPathUpdate `
+            -NoProfileUpdate:$NoProfileUpdate `
+            -Force
+    }
+    'Uninstall' {
+        Remove-PathWeaveInstall `
+            -InstallRoot $InstallRoot `
+            -NoPathUpdate:$NoPathUpdate `
+            -NoProfileUpdate:$NoProfileUpdate `
+            -Force:$Force
+    }
+}

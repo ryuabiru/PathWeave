@@ -36,6 +36,18 @@ irm https://raw.githubusercontent.com/ryuabiru/PathWeave/main/install.ps1 | iex
 & ([scriptblock]::Create((irm https://raw.githubusercontent.com/ryuabiru/PathWeave/main/install.ps1))) -UseTab
 ```
 
+既存インストールを upgrade:
+
+```powershell
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/ryuabiru/PathWeave/main/install.ps1))) -Action Upgrade
+```
+
+PathWeave を uninstall:
+
+```powershell
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/ryuabiru/PathWeave/main/install.ps1))) -Action Uninstall
+```
+
 Scoop でインストール:
 
 ```powershell
@@ -48,6 +60,8 @@ scoop install https://raw.githubusercontent.com/ryuabiru/PathWeave/main/packagin
 Import-Module "$env:SCOOP\apps\pathweave\current\powershell\PathWeave.psd1" -Force
 Enable-PathWeave -UseTab
 ```
+
+直接インストーラは `%LOCALAPPDATA%\PathWeave` を使い、デフォルトでユーザー `PATH` を更新し、PowerShell profile には `# PathWeave start` / `# PathWeave end` で囲まれた管理ブロックを書き込みます。
 
 ## 現在の状態
 

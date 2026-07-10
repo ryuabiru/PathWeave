@@ -36,6 +36,18 @@ If you want PathWeave on `Tab` immediately:
 & ([scriptblock]::Create((irm https://raw.githubusercontent.com/ryuabiru/PathWeave/main/install.ps1))) -UseTab
 ```
 
+Upgrade an existing install:
+
+```powershell
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/ryuabiru/PathWeave/main/install.ps1))) -Action Upgrade
+```
+
+Uninstall PathWeave:
+
+```powershell
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/ryuabiru/PathWeave/main/install.ps1))) -Action Uninstall
+```
+
 Install with Scoop:
 
 ```powershell
@@ -48,6 +60,8 @@ Then add the module to your PowerShell profile:
 Import-Module "$env:SCOOP\apps\pathweave\current\powershell\PathWeave.psd1" -Force
 Enable-PathWeave -UseTab
 ```
+
+The direct installer uses `%LOCALAPPDATA%\PathWeave`, updates the user `PATH` by default, and manages a marked `# PathWeave start` / `# PathWeave end` block in your PowerShell profile.
 
 ## Status
 
