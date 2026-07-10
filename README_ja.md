@@ -24,7 +24,17 @@ Rust 側は親 PowerShell の入力行を直接変更しません。プロンプ
 
 ## インストール
 
-PowerShell から最新 release をインストール:
+PathWeave の使い始め方は、大きく 3 つあります。
+
+1. PowerShell インストーラを使う
+2. release zip をダウンロードして使う
+3. リポジトリを clone してソースから使う
+
+### 方法 1: PowerShell インストーラを使う
+
+ほとんどの利用者にはこの方法がいちばん簡単です。
+
+最新 release をインストール:
 
 ```powershell
 irm https://raw.githubusercontent.com/ryuabiru/PathWeave/main/install.ps1 | iex
@@ -36,19 +46,41 @@ irm https://raw.githubusercontent.com/ryuabiru/PathWeave/main/install.ps1 | iex
 & ([scriptblock]::Create((irm https://raw.githubusercontent.com/ryuabiru/PathWeave/main/install.ps1))) -UseTab
 ```
 
-既存インストールを upgrade:
+既存の直接インストールを upgrade:
 
 ```powershell
 & ([scriptblock]::Create((irm https://raw.githubusercontent.com/ryuabiru/PathWeave/main/install.ps1))) -Action Upgrade
 ```
 
-PathWeave を uninstall:
+直接インストールした PathWeave を uninstall:
 
 ```powershell
 & ([scriptblock]::Create((irm https://raw.githubusercontent.com/ryuabiru/PathWeave/main/install.ps1))) -Action Uninstall
 ```
 
 直接インストーラは `%LOCALAPPDATA%\PathWeave` を使い、デフォルトでユーザー `PATH` を更新し、PowerShell profile には `# PathWeave start` / `# PathWeave end` で囲まれた管理ブロックを書き込みます。
+
+### 方法 2: release zip をダウンロードして使う
+
+ファイルを自分で展開して扱いたい場合は、GitHub Releases から最新の release zip をダウンロードします。
+
+release zip には次が含まれます。
+
+- `pwv.exe`
+- `install.ps1`
+- `SHA256SUMS.txt`
+- PowerShell モジュール
+- profile のサンプル
+- トップレベルのドキュメント
+
+展開後は、次のどちらかで使えます。
+
+- `install.ps1` を実行する
+- 展開先からモジュールを手動で import する
+
+### 方法 3: リポジトリを clone してソースから使う
+
+これは主に開発、テスト、ローカル検証向けです。
 
 ## 現在の状態
 
