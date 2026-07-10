@@ -1,5 +1,7 @@
 # PathWeave
 
+[日本語版 README](README_ja.md)
+
 PathWeave is a fuzzy path completion helper for PowerShell.
 
 It lets you type a meaningful part of a file or directory name and complete it anywhere a command argument accepts a path:
