@@ -48,19 +48,6 @@ PathWeave を uninstall:
 & ([scriptblock]::Create((irm https://raw.githubusercontent.com/ryuabiru/PathWeave/main/install.ps1))) -Action Uninstall
 ```
 
-Scoop でインストール:
-
-```powershell
-scoop install https://raw.githubusercontent.com/ryuabiru/PathWeave/main/packaging/scoop/pathweave.json
-```
-
-その後、PowerShell profile にモジュールを追加します:
-
-```powershell
-Import-Module "$env:SCOOP\apps\pathweave\current\powershell\PathWeave.psd1" -Force
-Enable-PathWeave -UseTab
-```
-
 直接インストーラは `%LOCALAPPDATA%\PathWeave` を使い、デフォルトでユーザー `PATH` を更新し、PowerShell profile には `# PathWeave start` / `# PathWeave end` で囲まれた管理ブロックを書き込みます。
 
 ## 現在の状態
