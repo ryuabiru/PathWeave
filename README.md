@@ -210,6 +210,14 @@ Run the PowerShell self-tests without Pester:
 pwsh -NoProfile -File powershell\tests\run-tests.ps1
 ```
 
+Build a Windows release zip:
+
+```powershell
+pwsh -NoProfile -File powershell\package-release.ps1
+```
+
+This creates a release-ready archive under `dist\`, containing `pwv.exe`, the PowerShell module, the sample profile, and the top-level documentation files.
+
 The PowerShell tests cover:
 
 - path quoting

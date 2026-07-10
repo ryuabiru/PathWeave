@@ -210,6 +210,14 @@ Pester なしで実行できる PowerShell 自己テスト:
 pwsh -NoProfile -File powershell\tests\run-tests.ps1
 ```
 
+Windows 向けの release zip を作る場合:
+
+```powershell
+pwsh -NoProfile -File powershell\package-release.ps1
+```
+
+`dist\` 以下に、`pwv.exe`、PowerShell モジュール、profile のサンプル、トップレベルのドキュメントをまとめた配布用 zip が生成されます。
+
 PowerShell テストで確認していること:
 
 - パスのクォート
