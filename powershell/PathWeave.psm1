@@ -426,6 +426,10 @@ function Resolve-PathWeaveExecutable {
 
     $moduleRoot = Split-Path -Parent $PSScriptRoot
     $candidates = @(
+        (Join-Path $moduleRoot 'pwv.exe')
+        (Join-Path $moduleRoot 'pwv')
+        (Join-Path $moduleRoot 'bin/pwv.exe')
+        (Join-Path $moduleRoot 'bin/pwv')
         (Join-Path $moduleRoot 'target/release/pwv.exe')
         (Join-Path $moduleRoot 'target/release/pwv')
         (Join-Path $moduleRoot 'target/debug/pwv.exe')

@@ -22,6 +22,20 @@ Rust never mutates the parent shell. PowerShell owns the prompt, cursor, key bin
 
 License: MIT. See [LICENSE](LICENSE).
 
+## Install
+
+Install the latest release from PowerShell:
+
+```powershell
+irm https://raw.githubusercontent.com/ryuabiru/PathWeave/main/install.ps1 | iex
+```
+
+If you want PathWeave on `Tab` immediately:
+
+```powershell
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/ryuabiru/PathWeave/main/install.ps1))) -UseTab
+```
+
 ## Status
 
 The current MVP supports:
@@ -216,7 +230,7 @@ Build a Windows release zip:
 pwsh -NoProfile -File powershell\package-release.ps1
 ```
 
-This creates a release-ready archive under `dist\`, containing `pwv.exe`, the PowerShell module, the sample profile, and the top-level documentation files.
+This creates a release-ready archive under `dist\`, containing `pwv.exe`, `install.ps1`, `SHA256SUMS.txt`, the PowerShell module, the sample profile, and the top-level documentation files.
 
 The PowerShell tests cover:
 

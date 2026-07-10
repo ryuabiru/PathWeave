@@ -22,6 +22,20 @@ Rust 側は親 PowerShell の入力行を直接変更しません。プロンプ
 
 ライセンス: MIT。詳細は [LICENSE](LICENSE) を参照してください。
 
+## インストール
+
+PowerShell から最新 release をインストール:
+
+```powershell
+irm https://raw.githubusercontent.com/ryuabiru/PathWeave/main/install.ps1 | iex
+```
+
+最初から `Tab` 統合も有効にしたい場合:
+
+```powershell
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/ryuabiru/PathWeave/main/install.ps1))) -UseTab
+```
+
 ## 現在の状態
 
 現在の MVP でできること:
@@ -216,7 +230,7 @@ Windows 向けの release zip を作る場合:
 pwsh -NoProfile -File powershell\package-release.ps1
 ```
 
-`dist\` 以下に、`pwv.exe`、PowerShell モジュール、profile のサンプル、トップレベルのドキュメントをまとめた配布用 zip が生成されます。
+`dist\` 以下に、`pwv.exe`、`install.ps1`、`SHA256SUMS.txt`、PowerShell モジュール、profile のサンプル、トップレベルのドキュメントをまとめた配布用 zip が生成されます。
 
 PowerShell テストで確認していること:
 
