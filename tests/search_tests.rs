@@ -176,6 +176,92 @@ fn caps_large_result_sets_to_requested_max_results() {
     assert_eq!(results[0]["display"].as_str().unwrap(), "00-Inbox");
 }
 
+#[test]
+fn matches_path_queries_against_prefix_stripped_segments() {
+    let dir = tempdir().unwrap();
+    fs::create_dir_all(dir.path().join("document").join("00-wiki")).unwrap();
+    fs::create_dir_all(dir.path().join("document").join("wiki-archive")).unwrap();
+
+    let results = run_search_json(
+        dir.path(),
+        &[
+            "search",
+            "--query",
+            "document/wiki",
+            "--cwd",
+            dir.path().to_str().unwrap(),
+        ],
+    );
+
+    let displays: Vec<_> = results
+        .iter()
+        .map(|result| result["display"].as_str().unwrap())
+        .collect();
+
+    assert!(!displays.is_empty());
+    assert_eq!(displays[0], "document/00-wiki");
+}
+
+#[test]
+fn path_queries_accept_windows_separators() {
+    let dir = tempdir().unwrap();
+    fs::create_dir_all(dir.path().join("document").join("md-wiki")).unwrap();
+    fs::create_dir_all(dir.path().join("document").join("wiki-archive")).unwrap();
+
+    let results = run_search_json(
+        dir.path(),
+        &[
+            "search",
+            "--query",
+            r"document\wiki",
+            "--cwd",
+            dir.path().to_str().unwrap(),
+        ],
+    );
+
+    assert_eq!(results[0]["display"].as_str().unwrap(), "document/md-wiki");
+}
+
+#[test]
+fn path_queries_prefer_exact_last_segment_over_prefix_stripped_match() {
+    let dir = tempdir().unwrap();
+    fs::create_dir_all(dir.path().join("document").join("wiki")).unwrap();
+    fs::create_dir_all(dir.path().join("document").join("00-wiki")).unwrap();
+
+    let results = run_search_json(
+        dir.path(),
+        &[
+            "search",
+            "--query",
+            "document/wiki",
+            "--cwd",
+            dir.path().to_str().unwrap(),
+        ],
+    );
+
+    assert_eq!(results[0]["display"].as_str().unwrap(), "document/wiki");
+}
+
+#[test]
+fn path_queries_prefer_matching_parent_directory_context() {
+    let dir = tempdir().unwrap();
+    fs::create_dir_all(dir.path().join("docs").join("00-Inbox")).unwrap();
+    fs::create_dir_all(dir.path().join("archive").join("00-Inbox")).unwrap();
+
+    let results = run_search_json(
+        dir.path(),
+        &[
+            "search",
+            "--query",
+            "docs/inbox",
+            "--cwd",
+            dir.path().to_str().unwrap(),
+        ],
+    );
+
+    assert_eq!(results[0]["display"].as_str().unwrap(), "docs/00-Inbox");
+}
+
 fn run_search_json(cwd: &std::path::Path, args: &[&str]) -> Vec<serde_json::Value> {
     let mut command = Command::cargo_bin("pwv").unwrap();
     let output = command

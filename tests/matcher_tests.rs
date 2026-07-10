@@ -13,6 +13,7 @@ fn inbox_matches_prefixed_name() {
         "00-Inbox",
         "00-Inbox",
         &stripped,
+        &stripped,
         matcher_engine.fuzzy_match("00-Inbox", "inbox"),
         matcher_engine.fuzzy_match("00-Inbox", "inbox"),
     )
@@ -32,6 +33,7 @@ fn matching_is_case_insensitive() {
         "00-Inbox",
         "00-Inbox",
         "Inbox",
+        "Inbox",
         matcher_engine.fuzzy_match("00-Inbox", "INBOX"),
         None,
     )
@@ -45,6 +47,7 @@ fn fuzzy_matching_finds_myinb() {
     let matcher_engine = SkimMatcherV2::default().ignore_case();
     let details = matcher::detect_match(
         "myinb",
+        "my-inbox",
         "my-inbox",
         "my-inbox",
         "my-inbox",

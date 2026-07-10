@@ -1,6 +1,6 @@
 @{
     RootModule = 'PathWeave.psm1'
-    ModuleVersion = '0.1.1'
+    ModuleVersion = '0.1.2'
     GUID = '8b8a0a75-e6e2-4f98-9d27-bfd63d47cc3d'
     Author = 'OpenAI'
     CompanyName = 'OpenAI'

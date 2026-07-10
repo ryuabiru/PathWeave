@@ -81,6 +81,11 @@ pub fn search_paths(options: &SearchOptions) -> Result<Vec<SearchResult>> {
         let relative = relative_display(&options.cwd, path);
         let file_name = entry.file_name().to_string_lossy().to_string();
         let stripped_name = strip_prefixes(&file_name, &options.ignored_prefix_patterns);
+        let stripped_relative = relative
+            .split('/')
+            .map(|segment| strip_prefixes(segment, &options.ignored_prefix_patterns))
+            .collect::<Vec<_>>()
+            .join("/");
         let fuzzy_name_score = matcher.fuzzy_match(&file_name, &options.query);
         let fuzzy_path_score = matcher.fuzzy_match(&relative, &options.query);
 
@@ -89,6 +94,7 @@ pub fn search_paths(options: &SearchOptions) -> Result<Vec<SearchResult>> {
             &file_name,
             &relative,
             &stripped_name,
+            &stripped_relative,
             fuzzy_name_score,
             fuzzy_path_score,
         ) else {

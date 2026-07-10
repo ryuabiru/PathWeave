@@ -1,15 +1,15 @@
 {
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "Fuzzy path completion helper for PowerShell",
     "homepage": "https://github.com/ryuabiru/PathWeave",
     "license": "MIT",
     "architecture": {
         "64bit": {
-            "url": "https://github.com/ryuabiru/PathWeave/releases/download/v0.1.1/PathWeave-v0.1.1-windows-x86_64.zip",
+            "url": "https://github.com/ryuabiru/PathWeave/releases/download/v0.1.2/PathWeave-v0.1.2-windows-x86_64.zip",
             "hash": "ba02686eb837aee903b85add2eedaf22cf398f0b81ccb4cb80a689bae6989dc4"
         }
     },
-    "extract_dir": "PathWeave-v0.1.1-windows-x86_64",
+    "extract_dir": "PathWeave-v0.1.2-windows-x86_64",
     "bin": [
         [
             "pwv.exe",
