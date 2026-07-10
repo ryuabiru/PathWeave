@@ -1,0 +1,23 @@
+# Rust build output
+/target/
+
+# Local editor and IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# PowerShell and local runtime noise
+*.ps1xml
+*.pssc
+*.psrc
+*.log
+
+# Local environment files
+.env
+.env.*
