@@ -20,6 +20,8 @@ The project is split into two pieces:
 
 Rust never mutates the parent shell. PowerShell owns the prompt, cursor, key bindings, and insertion behavior.
 
+License: MIT. See [LICENSE](LICENSE).
+
 ## Status
 
 The current MVP supports:

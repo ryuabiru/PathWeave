@@ -20,6 +20,8 @@ PathWeave は 2 つの部品で構成されています。
 
 Rust 側は親 PowerShell の入力行を直接変更しません。プロンプト、カーソル、キーバインド、挿入処理は PowerShell 側が担当します。
 
+ライセンス: MIT。詳細は [LICENSE](LICENSE) を参照してください。
+
 ## 現在の状態
 
 現在の MVP でできること:
