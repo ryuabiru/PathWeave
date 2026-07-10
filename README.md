@@ -36,6 +36,19 @@ If you want PathWeave on `Tab` immediately:
 & ([scriptblock]::Create((irm https://raw.githubusercontent.com/ryuabiru/PathWeave/main/install.ps1))) -UseTab
 ```
 
+Install with Scoop:
+
+```powershell
+scoop install https://raw.githubusercontent.com/ryuabiru/PathWeave/main/packaging/scoop/pathweave.json
+```
+
+Then add the module to your PowerShell profile:
+
+```powershell
+Import-Module "$env:SCOOP\apps\pathweave\current\powershell\PathWeave.psd1" -Force
+Enable-PathWeave -UseTab
+```
+
 ## Status
 
 The current MVP supports:

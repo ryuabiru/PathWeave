@@ -36,6 +36,19 @@ irm https://raw.githubusercontent.com/ryuabiru/PathWeave/main/install.ps1 | iex
 & ([scriptblock]::Create((irm https://raw.githubusercontent.com/ryuabiru/PathWeave/main/install.ps1))) -UseTab
 ```
 
+Scoop でインストール:
+
+```powershell
+scoop install https://raw.githubusercontent.com/ryuabiru/PathWeave/main/packaging/scoop/pathweave.json
+```
+
+その後、PowerShell profile にモジュールを追加します:
+
+```powershell
+Import-Module "$env:SCOOP\apps\pathweave\current\powershell\PathWeave.psd1" -Force
+Enable-PathWeave -UseTab
+```
+
 ## 現在の状態
 
 現在の MVP でできること:
